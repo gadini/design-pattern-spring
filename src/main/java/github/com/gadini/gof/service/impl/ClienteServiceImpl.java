@@ -1,8 +1,11 @@
 package github.com.gadini.gof.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import github.com.gadini.gof.model.Cliente;
 import github.com.gadini.gof.service.ClienteService;
 
+@Service
 public class ClienteServiceImpl implements ClienteService {
 
 	@Override

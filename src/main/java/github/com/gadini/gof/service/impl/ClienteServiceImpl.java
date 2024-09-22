@@ -52,8 +52,7 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public void deletar(Long id) {
-		// TODO Auto-generated method stub
-		
+		clienteRepository.deleteById(id);
 	}
 	
 	private void salvarClienteComCep(Cliente cliente) {

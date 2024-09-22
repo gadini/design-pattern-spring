@@ -6,14 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import github.com.gadini.gof.model.Cliente;
+import github.com.gadini.gof.model.Endereco;
 import github.com.gadini.gof.repository.ClienteRepository;
+import github.com.gadini.gof.repository.EnderecoRepository;
 import github.com.gadini.gof.service.ClienteService;
+import github.com.gadini.gof.service.ViaCepService;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private ViaCepService viaCepService;
 	
 	@Override
 	public Iterable<Cliente> buscarTodos() {
@@ -28,7 +37,16 @@ public class ClienteServiceImpl implements ClienteService {
 
 	@Override
 	public void inserir(Cliente cliente) {
-		// TODO Auto-generated method stub
+		Long cep = cliente.getEndereco().getCep();
+		Endereco endereco = enderecoRepository.findById(cep).orElseGet(()-> 
+		{
+			Endereco novoEndereco = viaCepService.consultarCep(cep.toString());
+			enderecoRepository.save(novoEndereco);
+			return novoEndereco;
+		});
+		
+		cliente.setEndereco(endereco);
+		clienteRepository.save(cliente);
 		
 	}
 
